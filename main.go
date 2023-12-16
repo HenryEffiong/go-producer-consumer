@@ -17,9 +17,24 @@ type Producer struct {
 }
 
 type PizzaOrder struct {
-	pizzaOrder int
-	message string
-	success bool
+	pizzaNumber int
+	message     string
+	success     bool
+}
+
+func (p *Producer) Close() error {
+	ch := make(chan error)
+	p.quit <- ch
+	return <-ch
+}
+
+func pizzeria(pizzaMaker *Producer) {
+	// Keep track of Pizza
+
+	// Run forever making pizzas until we quit
+	for {
+		// Try to make a pizza
+	}
 }
 
 func main() {
@@ -31,9 +46,14 @@ func main() {
 	color.Cyan("---------------------------------")
 
 	//  create a producer
+	pizzaJob := &Producer{
+		data: make(chan PizzaOrder),
+		quit: make(chan chan error),
+	}
 
 	//  run the producer in the background
- 
+	go pizzeria(pizzaJob)
+
 	//  create and run consumer
 
 	//  print out the ending message
